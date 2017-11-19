@@ -4,12 +4,8 @@ class User < ActiveRecord::Base
   	devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :trackable, :validatable
 
-    has_many :carts
     has_many :orders
+    has_many :carts
+    has_one :current_cart, class_name: 'Cart'
 
-    def self.current_cart
-    	if current_user
-    		Cart.find(current_user.current_cart)
-    	end
-    end
 end

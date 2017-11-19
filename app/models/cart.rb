@@ -4,11 +4,15 @@ class Cart < ActiveRecord::Base
 	has_many :items, :through => :line_items
 
 	def add_item(item)
-		if current_user.current_cart
-			LineItem.create(item_id: item, cart_id: current_user.current_cart.id)
+		li = self.line_items.find_by(item_id: item)
+		if li 
+			li.update(quantity: li.quantity+1) and return li
 		else
-			current_user.update(current_cart: cart.create)
-			LineItem.create(item_id: item, cart_id: current_user.current_cart.id)
+			self.line_items.build(item_id: item)
 		end
+	end
+
+	def total
+		self.items.sum(:price)
 	end
 end
