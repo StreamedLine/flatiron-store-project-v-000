@@ -4,7 +4,7 @@ class Cart < ActiveRecord::Base
 	has_many :items, :through => :line_items
 
 	def add_item(item)
-		li = self.line_items.find_by(item_id: item)
+		li = self.line_items.detect{|line_item| line_item.item_id == item.to_i }
 		if li 
 			li.update(quantity: li.quantity + 1) and return li
 		else
