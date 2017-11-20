@@ -3,8 +3,11 @@ class CartsController < ApplicationController
 	end
 
     def checkout
-    	# @cart=Cart.first
-    	# redirect_to cart_path(1)
+    	@cart = current_user.current_cart
+
+    	@cart.checkout
+
+    	redirect_to cart_path(@cart)
     end
 
 end
