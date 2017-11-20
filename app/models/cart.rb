@@ -1,5 +1,6 @@
 class Cart < ActiveRecord::Base
 	belongs_to :user
+	has_many :orders
 	has_many :line_items
 	has_many :items, :through => :line_items
 
@@ -20,6 +21,7 @@ class Cart < ActiveRecord::Base
 		self.line_items.each do |line_item|
 			line_item.item.minus_from_inventory(line_item[:quantity])
 		end
+		self.orders.create(user_id: self.user.id)
 		self.update(status: 'submitted', user_id: nil)
 	end
 
