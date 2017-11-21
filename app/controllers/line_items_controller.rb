@@ -1,5 +1,8 @@
 class LineItemsController < ApplicationController
 	def create
+		if !current_user
+			redirect_to new_user_session_path and return
+		end
 		@cart = init_current_cart?
 		@cart.add_item(params[:item_id])
 		@cart.save
